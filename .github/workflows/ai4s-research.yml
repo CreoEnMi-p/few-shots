@@ -1,0 +1,33 @@
+name: ai4s-research
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'research/ai4s-boundary/**'
+      - '.github/workflows/ai4s-research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai4s-research-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout (read only)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install research dependencies
+        run: python3 -m pip install numpy scipy
+      - name: Test mathematics and reproducibility
+        run: python3 -m unittest discover -s research/ai4s-boundary/src -p 'test_*.py' -v
+      - name: P006 smoke benchmark
+        run: OPENBLAS_NUM_THREADS=1 python3 research/ai4s-boundary/src/p006_labs.py --lengths 20 --seeds 1 --budget 50 --output /tmp/p006-smoke.json
+      - name: P007 smoke benchmark
+        run: OPENBLAS_NUM_THREADS=1 python3 research/ai4s-boundary/src/p007_thomson.py --lengths 12 --seeds 1 --steps 1 --maxiter 20 --output /tmp/p007-smoke.json
