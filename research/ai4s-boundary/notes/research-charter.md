@@ -6,12 +6,12 @@
 ## Why this is plausible
 - There is exploitable sequential structure: LABS has long-range interactions and many local minima. The same family is defined across many sequence lengths, allowing train/test splits.
 - Classical search is extremely competitive: 2025 GPU memetic-tabu improved 16 lengths N=92..120, but it *matched* the previously known value for N=100 rather than improving it. Thus beating E=578 is still open, not easy.
-- Learning itself is not novel: 2022 DNN+LSTM-adjusted Tabu tenure already exists, 2026 MixBinNet generates low-correlation binary sequences, and 2026 Thompson-sampling-guided walks improved many larger instances. A generic DQN/PPO wrapper or energy predictor is insufficient novelty.
+- Learning itself is not novel: 2022 DNN+LSTM-adjusted Tabu tenure and a 2024 DDQN+SDLS hybrid already exist, 2026 MixBinNet generates low-correlation binary sequences, and 2026 Thompson-sampling-guided walks improved many larger instances. A generic DQN/PPO wrapper or energy predictor is insufficient novelty.
 
 ## Exact scientific hypothesis
 **H1:** Given structurally informative features of an existing LABS local minimum (aperiodic autocorrelations C_k, per-bit exact delta energies, recent accepted trajectory), a learned policy can choose *coordinated multi-bit escape moves* whose **post-relaxation outcome** is better than strong non-learned perturbation and tenure policies at equal total compute.
 
-Why different from prior work: optimize the *expected basin reached after a fixed local-search rollout* rather than one-step energy reduction or tuning only Tabu tenure. Structured composite moves are learned using delayed evaluation, not just randomly selecting flip counts. This is a working research hypothesis, not a claim of unexplored novelty; literature comparison and ablations may falsify it.
+Why different from prior work: optimize the *expected basin reached after a fixed local-search rollout* rather than a one-bit DDQN policy penalizing immediate uphill moves (Żurek et al., 2024) or tuning only Tabu tenure (Żurek et al., 2022). Structured composite moves are learned using delayed evaluation, not just randomly selecting flip counts. This is a working research hypothesis, not a claim of unexplored novelty; literature comparison and ablations may falsify it.
 
 ## Sequential work packages
 1. **Validity and classical baselines.** Correct exact energy and O(N^2) all-bit delta evaluation; restore good single-flip Tabu; progress to memetic population/recombination, efficient evaluator and self-avoiding-walk comparisons. Verify source algorithm details rather than claiming a partial port is the published method.
@@ -37,7 +37,8 @@ Target consumer GPU: RTX 4070, small neural model; optimized classical search is
 
 References:
 - Z. Zhang et al. (2025), *New Improvements in Solving Large LABS Instances Using Massively Parallelizable Memetic Tabu Search*: https://arxiv.org/abs/2504.00987 (N=100 ties old best, N=92..120 includes 16 improvements).
-- D. M. et al. (2022), *A Deep Neural Network as a TABU Support in Solving LABS Problem*: https://doi.org/10.1007/978-3-031-08754-7_32 (existing adaptive tenure).
+- D. Żurek et al. (2022), *A Deep Neural Network as a TABU Support in Solving LABS Problem*: https://doi.org/10.1007/978-3-031-08754-7_32 (existing adaptive tenure).
+- D. Żurek et al. (2024), *A Deep Double Q-Learning as a SDLS support in solving LABS problem*: https://doi.org/10.14428/esann/2024.ES2024-36 (DDQN chooses individual bit flips, rewards penalize uphill steps; five runs per length, N=64/96/128/256; published hybrid best vs SDLS but not state-of-the-art memetic-tabu).
 - B. Pšeničnik et al. (2026), *Prioritizing Search Space Regions in the Low Autocorrelation Binary Sequences Problem*: https://arxiv.org/abs/2607.09688 (Thompson sampling + GPU self-avoiding walks).
 - B. Yoon et al. (2026), *Mixer-Based Neural Network for Binary Sequence Generation*: https://doi.org/10.1049/ell2.70699 (related multi-objective neural sequence generation, different exact objective).
 - P007 backup: P. Amore & D. J. Wales (2026), *Efficient Searches for Low-Energy Structures in Clusters with Thousands of Particles*: https://doi.org/10.1063/5.0355867
