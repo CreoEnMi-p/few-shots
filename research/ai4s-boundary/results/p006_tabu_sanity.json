@@ -1,0 +1,43 @@
+{
+  "provenance": "Locally executed with numpy 2.3.5, scipy 1.17.0, Python; exact-delta and repeatability tests passed (2 tests). CPU, OPENBLAS_NUM_THREADS=1.",
+  "settings": {
+    "seeds": [
+      0,
+      1
+    ],
+    "lengths": [
+      40,
+      60,
+      100
+    ],
+    "steps": 800,
+    "solver": "single-flip Tabu reference; 1 restarts per seed; NOT GPU memetic solver"
+  },
+  "results": [
+    {
+      "n": 40,
+      "scores": [
+        152,
+        152
+      ],
+      "moves_per_seed": 32000
+    },
+    {
+      "n": 60,
+      "scores": [
+        358,
+        370
+      ],
+      "moves_per_seed": 48000
+    },
+    {
+      "n": 100,
+      "scores": [
+        1074,
+        1046
+      ],
+      "moves_per_seed": 80000
+    }
+  ],
+  "scope": "Small sanity-check only; unequal budgets vs earlier pilots; no new best-known score and no world-record claim."
+}

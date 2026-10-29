@@ -23,6 +23,12 @@ OPENBLAS_NUM_THREADS=1 python src/p007_thomson.py --lengths 32 60 --seeds 3 --st
 
 The separate P006 record-seeded challenge used 4 seeds, 25,000 proposals per strategy and the 100-sign baseline sequence from the official `problems/p006-labs-100/baseline/certificate.json` (supply its string using `--warmstart`).
 
+## Formal research phase
+
+**Decision:** GO on P006 as a conditional algorithm-discovery project, not a commitment to break the N=100 world record. Read `notes/research-charter.md` for falsifiable hypotheses, literature, benchmarks and stop/go criteria. The earlier neural-vs-single-flip comparison is a small pilot with weak baselines and is **not** decisive.
+
+A locally verified classical reference is `src/p006_tabu_reference.py`, with exact single-flip evaluation and `src/test_p006_tabu_reference.py` correctness tests. It is **not** the complete GPU memetic-tabu state of the art.
+
 ## Results
 
 See `results/summary.json` for all seed-level final best scores and `notes/interpretation.md` for interpretation, limitations and next experiments.
@@ -33,6 +39,6 @@ See `results/summary.json` for all seed-level final best scores and `notes/inter
 
 ## Fairness and caveats
 
-P006 matches proposal count and initial random seed, not CPU time (online neural updates cost extra). P007 matches perturbation/relaxation counts, not total optimizer evaluations. These are small pilot experiments, not world records and not evidence that neural methods cannot help. The research CI runs smoke tests; full experiment commands are explicit above.
+P006 matches proposal count and initial random seed, not CPU time (online neural updates cost extra). P007 matches perturbation/relaxation counts, not total optimizer evaluations. These are small pilot experiments, not world records and not evidence that neural methods cannot help. Research smoke tests are runnable manually. An extra research workflow was removed to preserve the upstream repository's strict workflow whitelist; the existing repository test workflow remains unchanged.
 
 **Repository organization:** keep experiment code and reports under `research/`; put only validated record-breaking certificates into the official `problems/*/shots/` layout.
